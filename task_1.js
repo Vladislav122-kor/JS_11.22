@@ -4,6 +4,13 @@ function checkValue(value_1, value_2) {
     console.log('Incorrect input!');
     return;
   }
+
+  if (value_1.length > 1 || value_2.length > 1) {
+    if (value_1.startsWith('0') ||  value_2.startsWith('0')) {
+      console.log('Incorrect input!');
+      return;
+    }
+  }
   
   // converting variables to type number and call the function for numbers validation
   makeNumberValidation(Number(value_1), Number(value_2));
@@ -22,4 +29,4 @@ function makeNumberValidation(number_1, number_2) {
   }
 }
   
-checkValue(prompt('Введите первое число'), prompt('Введите второе число'));
+checkValue(prompt('Enter the first number'), prompt('Enter the second number'));
