@@ -1,6 +1,6 @@
 function checkValue(value_1, value_2) {
 
-  if (value_1 === '' || value_2 === '' || value_1 === null || value_2 === null || value_1.startsWith(' ') || value_2.startsWith(' ')) {
+  if (value_1 === '' || value_2 === '' || value_1 === null || value_2 === null || value_1.includes(' ') || value_2.includes(' ')) {
     console.log('Incorrect input!');
     return;
   }
