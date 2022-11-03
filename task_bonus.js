@@ -1,65 +1,69 @@
-function getFirstNumber(number_1) {
-
-  if (number_1 === '' || number_1 === null || number_1.includes(' ')) {
-    alert('Please enter only positive numbers');
-    getFirstNumber(prompt('Enter any positive number'));
-    return;
+function checkValue(number) {
+  if (number === null) {
+    return 'cancel';
   }
 
-  if (number_1.length > 1) {
-    if (number_1.startsWith('0')) {
+  if (number === '' || number.includes(' ')) {
+    alert('Please enter only positive numbers');
+    return false;
+  }
+
+  if (number.length > 1) {
+    if (number.startsWith('0')) {
       alert('Please enter only positive numbers');
-      getFirstNumber(prompt('Enter any positive number'));
-      return;
+      return false;
     }
   }
 
   // converting variable to type number and make additional validations
-  number_1 = Number(number_1);
+  number = Number(number);
 
-  if (Number.isNaN(number_1) || number_1 < 0) {
+  if (Number.isNaN(number) || number <= 0) {
     alert('Please enter only positive numbers');
-    getFirstNumber(prompt('Enter any positive number'));
-    return;
+    return false;
   }
 
-  getSecondNumber(number_1, prompt('Enter a number 100 more than the first number'));
+  return number;
 }
 
 
 
-function getSecondNumber(number_1, number_2) {
+function getFirstNumber() {
 
-  if (number_2 === '' || number_2 === null || number_2.includes(' ')) {
-    alert('Please enter only positive numbers');
-    getSecondNumber(number_1, prompt('Enter a number 100 more than the first number'));
-    return;
-  }
+  let checkNumber = false;
 
-  if (number_2.length > 1) {
-    if (number_2.startsWith('0')) {
-      alert('Please enter only positive numbers');
-      getSecondNumber(number_1, prompt('Enter a number 100 more than the first number'));
+  while (!checkNumber) {
+    checkNumber = checkValue(prompt('Enter any positive number'));
+
+    if (checkNumber === 'cancel') {
       return;
     }
   }
 
-  // converting variable to type number and make additional validations
-  number_2 = Number(number_2);
+  getSecondNumber(checkNumber);
+}
 
-  if (Number.isNaN(number_2) || number_2 < 0) {
-    alert('Please enter only positive numbers');
-    getSecondNumber(number_1, prompt('Enter a number 100 more than the first number'));
-    return;
+
+
+function getSecondNumber(number_1) {
+
+  let checkNumber = false;
+
+  while (!checkNumber) {
+
+    checkNumber = checkValue(prompt('Enter a number 100 more than the first number'));
+    
+    if (checkNumber === 'cancel') {
+      return;
+    }
+    
+    if (checkNumber && checkNumber < number_1 + 100) {
+      alert(`Please enter a number greater than ${number_1 + 100} inclusive`);
+      checkNumber = false;
+    }
   }
 
-  if (number_2 < number_1 + 100) {
-    alert(`Please enter a number greater than ${number_1 + 100}`);
-    getSecondNumber(number_1, prompt('Enter a number 100 more than the first number'));
-    return;
-  }
-
-  playGame(number_1, number_2);
+  playGame(number_1, checkNumber);
 }
 
 
@@ -71,63 +75,53 @@ function playGame(number_1, number_2) {
   let attemptNumber = 0;
 
 
+  let checkNumber = false;
+
+  while (!checkNumber) {
+    checkNumber = checkValue(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
+
+    if (checkNumber === 'cancel') {
+      return;
+    }
+
+    if (checkNumber && checkNumber < number_1 || checkNumber > number_2) {
+        alert(`Please enter a number greater than ${number_1} inclusive and less than ${number_2} inclusive`);
+        checkNumber = false;
+    }
+
+    if (checkNumber) {
+      checkNumber = guessNumber(checkNumber);
+    }
+  }
+
+
 
   function guessNumber(selectedNumber) {
-
-    if (selectedNumber === '' || selectedNumber === null || selectedNumber.includes(' ')) {
-      alert('Please enter only positive numbers');
-      guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-      return;
-    }
-  
-    if (selectedNumber.length > 1) {
-      if (selectedNumber.startsWith('0')) {
-        alert('Please enter only positive numbers');
-        guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-        return;
-      }
-    }
-  
-    // converting variable to type number and make additional validations
-    selectedNumber = Number(selectedNumber);
-  
-    if (Number.isNaN(selectedNumber) || selectedNumber < 0) {
-      alert('Please enter only positive numbers');
-      guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-      return;
-    }
-  
-    if (selectedNumber < number_1 || selectedNumber > number_2) {
-      alert(`Please enter a number greater than ${number_1} inclusive and less than ${number_2} inclusive`);
-      guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-      return;
-    }
 
     // compare selected number with the hidden
     if (selectedNumber === RANDOM && attemptNumber === 0) {
 
       alert('Great! It’s like you knew the number');
-      return;
+      return true;
 
     } else if (selectedNumber !== RANDOM && attemptNumber === 0) {
 
       alert('Cold');
       previousNumber = selectedNumber;
       attemptNumber++;
-      guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-      return;
+      return false;
 
     } else if (selectedNumber === RANDOM && attemptNumber !== 0) {
 
       alert(`You did it in ${attemptNumber} attempts. Congratulations!`);
+      return true;
 
     } else if (selectedNumber === RANDOM - 1 || selectedNumber === RANDOM + 1) {
 
       alert('You’re almost there');
       previousNumber = selectedNumber;
       attemptNumber++;
-      guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-      return;
+      return false;
 
     } else {
 
@@ -147,22 +141,20 @@ function playGame(number_1, number_2) {
         alert('Warmer');
         previousNumber = selectedNumber;
         attemptNumber++;
-        guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-        return;
+        return false;
 
       } else {
 
         alert('Colder');
         previousNumber = selectedNumber;
         attemptNumber++;
-        guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
-        return;
+        return false;
         
       }
     }
   }
-
-  guessNumber(prompt(`Try to guess the hidden number from ${number_1} to ${number_2} inclusive`));
 }
 
-getFirstNumber(prompt('Enter any positive number'));
+
+
+getFirstNumber();
