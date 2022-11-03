@@ -1,32 +1,63 @@
-function checkValue(value_1, value_2) {
+function checkValue(number) {
 
-  if (value_1 === '' || value_2 === '' || value_1 === null || value_2 === null || value_1.includes(' ') || value_2.includes(' ')) {
-    console.log('Incorrect input!');
-    return;
+  if (number === null) {
+    return 'cancel';
   }
 
-  if (value_1.length > 1 || value_2.length > 1) {
-    if (value_1.startsWith('0') ||  value_2.startsWith('0')) {
+  if (number === '' || number.includes(' ')) {
+    console.log('Incorrect input!');
+    return false;
+  }
+
+  if (number.length > 1) {
+    if (number.startsWith('0')) {
       console.log('Incorrect input!');
-      return;
+      return false;
     }
   }
   
-  // converting variables to type number and call the function for numbers validation
-  makeNumberValidation(Number(value_1), Number(value_2));
-}
-  
-function makeNumberValidation(number_1, number_2) {
-  
-  if (Number.isNaN(number_1) || Number.isNaN(number_2)) {
+  // converting variable to type number and make additional validations
+  number = Number(number);
+
+  if (Number.isNaN(number) || number < 0) {
     console.log('Incorrect input!');
-  } else {
-    const SUM = number_1 + number_2;
-    const PRODUCT = number_1 * number_2;
-    const POWER = number_1 ** number_2;
-  
-    console.log(`First number: ${number_1}. Second number: ${number_2}. Sum: ${SUM}. Product: ${PRODUCT}. Power: ${POWER}`);
+    return false;
   }
+
+  return number;
+}
+
+
+
+function getNumbers() {
+
+  let number_1 = checkValue(prompt('Enter the first number'));
+
+
+  if (number_1 === 'cancel' || number_1 !== 0 && !number_1) {
+    return;
+  }
+
+  let number_2 = checkValue(prompt('Enter the second number'));
+
+  if (number_2 === 'cancel' || number_2 !== 0 && !number_2) {
+    return;
+  }
+
+  consoleResult(number_1, number_2);
+}
+
+
+
+function consoleResult(number_1, number_2) {
+  
+  const SUM = number_1 + number_2;
+  const PRODUCT = number_1 * number_2;
+  const POWER = number_1 ** number_2;
+  
+  console.log(`First number: ${number_1}. Second number: ${number_2}. Sum: ${SUM}. Product: ${PRODUCT}. Power: ${POWER}`);
 }
   
-checkValue(prompt('Enter the first number'), prompt('Enter the second number'));
+
+
+getNumbers();
