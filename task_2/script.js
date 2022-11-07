@@ -41,10 +41,14 @@ function getValues() {
 
 function consoleResult(string, number) {
   const MATRIX = [];
-  while (MATRIX.length < number) {
-    MATRIX.push(Array(number).fill(string));
+  while(MATRIX.length < number * number) {
+    if(MATRIX.length % number === 0 && MATRIX.length !== 0) {
+      MATRIX.push(`\n${string}`);
+    } else {
+      MATRIX.push(string);
+    }
   }
-  console.log(MATRIX);
+  console.log(MATRIX.join(' '));
 }
 
 getValues();
