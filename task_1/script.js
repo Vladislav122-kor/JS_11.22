@@ -25,7 +25,7 @@ function getNumbers() {
   if(NUMBER_1 === 'cancel' || NUMBER_1 !== 0 && !NUMBER_1) {
     return;
   }
-  let NUMBER_2 = checkValue(prompt('Enter the second number'));
+  const NUMBER_2 = checkValue(prompt('Enter the second number'));
   if(NUMBER_2 === 'cancel' || NUMBER_2 !== 0 && !NUMBER_2) {
     return;
   }
