@@ -1,13 +1,11 @@
-function makeDeepCopy (obj) {
-
+function makeDeepCopy(obj) {
   let copy;
-
   function copyArray(array, path) {
-    for (let [index, elem] of array.entries()) {
-      if (Array.isArray(elem)) {
+    for(let [index, elem] of array.entries()) {
+      if(Array.isArray(elem)) {
         path[index] = [];
         copyArray(elem, path[index]);
-      } else if (typeof elem === 'object' && elem !== null) {
+      } else if(typeof elem === 'object' && elem !== null) {
         path[index] = {};
         copyObject(elem, path[index]);
       } else {
@@ -17,11 +15,11 @@ function makeDeepCopy (obj) {
   }
 
   function copyObject(object, path) {
-    for (let elem in object) {
-      if (Array.isArray(object[elem])) {
+    for(let elem in object) {
+      if(Array.isArray(object[elem])) {
         path[elem] = [];
         copyArray(object[elem], path[elem]);
-      } else if (typeof object[elem] === 'object' && object[elem] !== null) {
+      } else if(typeof object[elem] === 'object' && object[elem] !== null) {
         path[elem] = {};
         copyObject(object[elem], path[elem]);
       } else {
@@ -30,10 +28,10 @@ function makeDeepCopy (obj) {
     }
   }
 
-  if (Array.isArray(obj)) {
+  if(Array.isArray(obj)) {
     copy = [];
     copyArray(obj, copy);
-  } else if (typeof obj === 'object' && obj !== null) {
+  } else if(typeof obj === 'object' && obj !== null) {
     copy = {};
     copyObject(obj, copy);
   } else {
