@@ -8,9 +8,25 @@ function createIterable(valFrom, valTo) {
   if(valTo <= valFrom) {
     throw new Error();
   }
-  const ARRAY = [];
-  for(let i = valFrom; i <= valTo; i += 1) {
-    ARRAY.push(i);
+  const objIterable = {
+    [Symbol.iterator]() {
+      let current = valFrom;
+      let last = valTo;
+      return {
+        next() {
+          if (current <= last) {
+            return {
+              done: false,
+              value: current++
+            }
+          } else {
+            return {
+              done: true
+            }
+          }
+        }
+      }
+    }
   }
-  return ARRAY;
+  return objIterable;
 }
